@@ -1,0 +1,31 @@
+.idea
+node_modules
+.env
+yarn-error.log
+arkey.json
+
+#Hardhat files
+cache
+
+**/.DS_Store
+
+trlab-assets
+
+# OpenZeppelin
+.openzeppelin/unknown-*.json
+
+for-reference
+
+# coverage
+coverage
+coverage.json
+
+data
+
+# yarn v2
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
