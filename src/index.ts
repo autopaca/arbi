@@ -1,9 +1,10 @@
 import ccxt, { Exchange } from "ccxt";
+import createHttpsProxyAgent from 'https-proxy-agent';
 import { BaseAsset, FundingRateInfo, IndexInfo } from './interfaces';
 
 // ccxt unified symbol
-const btcDomSymbol = "BTCDOMUSDT";
-const btcSymbol = 'BTCUSDT';
+const btcDomSymbol = "BTCDOM/USDT";
+const btcSymbol = 'BTC/USDT';
 // binance symbol
 const btcDomIndexSymbol = "BTCDOMUSDT";
 
@@ -12,7 +13,10 @@ const btcDomIndexSymbol = "BTCDOMUSDT";
 const limit = 30;
 
 async function main() {
-  const exchange = new ccxt.binanceusdm();
+  // change proxy info here
+  const proxy: string = process.env.http_proxy || 'http://localhost:7890' // HTTP/HTTPS proxy to connect to
+  const agent = createHttpsProxyAgent(proxy);
+  const exchange = new ccxt.binanceusdm({agent});
 
   // const ticker = await exchange.fapiPublicGetTickerPrice({symbol: btcDomSymbol});
   // console.log({ticker});
@@ -35,7 +39,7 @@ async function main() {
 async function getAvgWeightedFR(exchange: Exchange, baseAssetList: BaseAsset[]) {
   let res = 0;
   for (const baseAsset of baseAssetList) {
-    const symbol = `${baseAsset.quoteAsset}USDT`; // the ccxt unified symbol format
+    const symbol = `${baseAsset.quoteAsset}/USDT`; // the ccxt unified symbol format
     res += (await getAvgFR(exchange, symbol)) * Number(baseAsset.weightInPercentage);
   }
   return res;
