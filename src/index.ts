@@ -18,9 +18,6 @@ async function main() {
   const agent = createHttpsProxyAgent(proxy);
   const exchange = new ccxt.binanceusdm({agent});
 
-  // const ticker = await exchange.fapiPublicGetTickerPrice({symbol: btcDomSymbol});
-  // console.log({ticker});
-  // console.log({apis: exchange.fapiPublicGetFundingRate})
   // get btcDom index base assets and their weights
   const btcDomInfo = await getBTCDomIndexInfo(exchange)
 
@@ -48,7 +45,7 @@ async function getAvgWeightedFR(exchange: Exchange, baseAssetList: BaseAsset[]) 
 // request FR history and calculate average
 async function getAvgFR(exchange: Exchange, symbol: string) {
   const frInfos = await getFRInfos(exchange, symbol);
-  const avg = (100 * frInfos.reduce((prev: number, cur: FundingRateInfo) => cur.fundingRate + prev, 0)) / frInfos.length;
+  const avg = 100 * frInfos.reduce((prev: number, cur: FundingRateInfo) => cur.fundingRate + prev, 0) / frInfos.length;
   console.log(`${symbol} average funding rate for ${limit} data points: ${avg}`)
   return avg;
 }
